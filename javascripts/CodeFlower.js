@@ -17,7 +17,7 @@ var CodeFlower = function(selector, w, h) {
   this.force = d3.layout.force()
     .on("tick", this.tick.bind(this))
     .charge(function(d) { return d._children ? -d.size / 100 : -40; })
-    .linkDistance(function(d) { return d.target._children ? 80 : 25; })
+    .linkDistance(function(d) { return d.target._children ? 80 : 50; })
     .size([h, w]);
 };
 
@@ -32,12 +32,12 @@ CodeFlower.prototype.update = function(json) {
   var links = d3.layout.tree().links(nodes);
   var total = nodes.length || 1;
 
-  // remove existing text (will readd it afterwards to be sure it's on top)
+  // remove existing text (will read it afterwards to be sure it's on top)
   this.svg.selectAll("text").remove();
 
   // Restart the force layout
   this.force
-    .gravity(Math.atan(total / 50) / Math.PI * 0.4)
+    .gravity(Math.atan(total / 50) / Math.PI * 0.24)
     .nodes(nodes)
     .links(links)
     .start();
@@ -64,6 +64,7 @@ CodeFlower.prototype.update = function(json) {
 
   this.node.transition()
     .attr("r", function(d) { return d.children ? 3.5 : Math.pow(d.size, 2/5) || 1; });
+    //  .attr("r", function(d) { return Math.pow(d.size, 2/5) });
 
   // Enter any new nodes
   this.node.enter().append('svg:circle')
@@ -114,6 +115,9 @@ CodeFlower.prototype.click = function(d) {
     d._children = d.children;
     d.children = null;
   } else {
+    //  this.style("fill", function color(d) {
+    //  return "hsl(0,100%,50%)";
+    //});
     d.children = d._children;
     d._children = null;
   }
@@ -122,7 +126,8 @@ CodeFlower.prototype.click = function(d) {
 
 CodeFlower.prototype.mouseover = function(d) {
   this.text.attr('transform', 'translate(' + d.x + ',' + (d.y - 5 - (d.children ? 3.5 : Math.sqrt(d.size) / 2)) + ')')
-    .text(d.name + ": " + d.size + " loc")
+    //.text(d.name + ": " + d.size + " loc")
+      .text(d.name + " " + d.brand)
     .style('display', null);
 };
 

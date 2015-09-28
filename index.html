@@ -47,6 +47,7 @@ line.link {
           <fieldset>
           <label>Example projects from GitHub:</label>
           <select id="project">
+              <option value="data/admin.json">admin / admin</option>
             <option value="data/uptime.json">fzaninotto / uptime</option>
             <option value="data/faker.json">fzaninotto / faker</option>
             <option value="data/jquery.json">jquery / jquery</option>
@@ -137,13 +138,15 @@ $ git ls-files | xargs wc -l > symfony.wc
         if (currentCodeFlower) currentCodeFlower.cleanup();
         // adapt layout size to the total number of elements
         var total = countElements(json);
-        w = parseInt(Math.sqrt(total) * 30, 10);
-        h = parseInt(Math.sqrt(total) * 30, 10);
+//        w = parseInt(Math.sqrt(total) * 30, 10);
+//        h = parseInt(Math.sqrt(total) * 30, 10);
+          w = 600;
+          h = 600;
         // create a new CodeFlower
         currentCodeFlower = new CodeFlower("#visualization", w, h).update(json);
       };
 
-      d3.json('data.json', createCodeFlower);
+      d3.json('data/admin.json', createCodeFlower);
 
       document.getElementById('project').addEventListener('change', function() {
         d3.json(this.value, createCodeFlower);
